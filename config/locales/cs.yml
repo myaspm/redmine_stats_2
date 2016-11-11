@@ -1,0 +1,26 @@
+# Czech strings go here for Rails i18n
+cs:
+  stats_label_stats:       													"Statistika"
+  stats_label_issue_activity: 											"Aktivita úkolů"
+  stats_label_new_issues_priorities:							  "Nové priority úkolů"
+  stats_label_more_active_issues: 									"Více o aktivitě úkolů"
+  stats_label_filters: 													    "Filtry"
+
+  stats_label_current_week: 											  "Současný týden"
+  stats_label_current_month: 											  "Současný měsíc"
+  stats_label_last_week: 												    "Poslední týden"
+  stats_label_last_month: 												  "Poslední měsíc"
+  stats_label_begining_of_time: 										"Od počátku věků"
+  stats_label_filtering_between:										"Filtrování mezi: "
+  stats_label_and:														      "a"
+  stats_label_open_issues_count:										"Aktuálně otevřené úkoly: "
+  stats_all_projects:													      "Všechny projekty" 
+  stats_label_custom:                               "Volitelný"
+  stats_label_change:                               "Zmeň"
+  stats_label_begin:                                "Začátek"
+  stats_label_end:                                  "Konec"
+
+  stats_label_open_issues:                          "Otevřené úkoly"
+  stats_label_closed_issues:                        "Uzavřené úkoly"
+  stats_label_legend:                               "Legenda"
+  stats_open_issues_chart_info:                     "Celkem otevřené otázky od počátku věků, bez filtrů"

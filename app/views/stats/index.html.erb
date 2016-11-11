@@ -1,0 +1,312 @@
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag 'stats.css', :plugin => 'redmine_stats' %>
+    <%= javascript_include_tag 'Chart.min.js', :plugin => 'redmine_stats' %>
+<% end %>
+
+
+
+<%
+
+red_color = 	'fillColor : "rgba(197,63,59,0.6)",
+				strokeColor : "rgba(201,48,44,1)",
+				pointColor : "rgba(201,48,44,1)",
+				pointStrokeColor : "#fff",
+				pointHighlightFill : "#fff",
+				pointHighlightStroke : "rgba(220,220,220,1)",'
+
+green_color = 	'fillColor : "rgba(92,184,92,0.5)",
+				strokeColor : "rgba(68,157,68,1)",
+				pointColor : "rgba(151,187,205,1)",
+				pointStrokeColor : "#fff",
+				pointHighlightFill : "#fff",
+				pointHighlightStroke : "rgba(151,187,205,1)",'
+
+%>
+
+
+
+<br>
+
+<div class="splitcontentleft">
+	<div>
+		<h3><%= l(:stats_label_issue_activity) %></h3><br>
+		<canvas style="display: block; margin: 0 auto;" id="chart_left" height="200" width="400"></canvas>
+	</div>
+	<br>
+
+	<h3><%=l(:field_tracker)%></h3><br>
+	<%= render :partial => 'simple', 
+			:locals => { :data => @issues_by_tracker, :field_name => "tracker_id", :rows => @trackers, :filter_by => "created_on" } %>
+	<br />
+	
+	<h3><%=l(:field_assigned_to)%></h3><br>
+	<canvas style="display: block; margin: 0 auto;" id="chart_assignee"  width="400" height="250"></canvas><br>
+	<%= render :partial => 'simple', 
+			:locals => { :data => @issues_by_assigned_to, :field_name => "assigned_to_id", :rows => @assignees, :filter_by => "created_on" } %>
+	<br /> <br />
+	
+	<h3><%= l(:stats_label_more_active_issues)%></h3><br>
+	<%= render :partial => 'issues/list_simple', :locals => { :issues => @top5, :filter_by => "created_on" } %>
+</div>
+
+<div class="splitcontentright">
+	<h3><%=l(:field_priority)%></h3><br>
+	<canvas style="display: block; margin: 0 auto;" id="chart_right"  width="400" height="200"></canvas><br><br><br><br>
+	<%= render :partial => 'simple', 
+			:locals => { :data => @issues_by_priority, :field_name => "priority_id", :rows => @priorities, :filter_by => "created_on" } %>
+	<br />
+	
+	<h3><%= @s_project.nil?  ? l(:field_project) : l(:field_author) %></h3><br>
+	
+	<canvas style="display: block; margin: 0 auto;" id="chart_author_project"  width="400" height="250"></canvas><br>
+	<%= 
+		if @s_project.nil? 
+			render :partial => 'simple', 
+					:locals => { :data => @issues_by_project, :field_name => "project_id", :rows => @used_projects, :filter_by => "created_on" } 
+		else
+			render :partial => 'simple', 
+					:locals => { :data => @issues_by_author, :field_name => "author_id", :rows => @authors, :filter_by => "created_on" } 
+		end
+		%>
+	<br />
+</div>
+
+<% content_for :sidebar do %>
+    <%= render :partial => 'sidebar' %>
+<% end %>
+
+<script>
+
+	//open issues chart
+	var labels = <%= raw @priorities.map{|p| p.name}.to_json %>;
+	var chart_open_issues = {
+	labels : labels,
+	datasets : [
+		{
+			  label: "Opened Issues",
+				<%= raw red_color %>
+        data: <%= raw @priorities.map{|priority| 
+        	
+        	count = 0
+        	@open_issues.each{|p| 
+						count += Integer(p["total"]) if p["closed"].eql?("f") and priority.id == Integer(p["priority_id"])
+        	}
+
+        	count
+
+        }.to_json %>
+		}
+	]};
+
+	//Chart left
+	var labels_1 = <%= raw @issues_last_days[:dates].to_json %>;
+	var chart_left_data = {
+	labels : labels_1,
+	datasets : [
+		{
+			label: "Closed Issues",
+			<%= raw green_color %>
+			data : <%= raw @issues_last_days[:closed].to_json %>
+		},
+		{
+			label: "Opened Issues",
+			<%= raw red_color %>
+			data : <%= raw @issues_last_days[:created].to_json %>,
+		}
+	]};
+
+	//Chart right
+	var chart_right_data = {
+    labels: <%= raw @priorities.map{|p| p.name}.to_json %>,
+    datasets: [
+        {
+            label: "Closed Issues",
+						<%= raw green_color %>
+            data: <%= raw @priorities.map{|priority|
+            	total = 0
+            	@issues_by_priority.each{|p| 
+								total += Integer(p["total"]) if p["closed"].eql?("t") and priority.id == Integer(p["priority_id"])
+            	}
+            	total
+            }.to_json %>
+        } ,
+        {
+            label: "Opened Issues",
+						<%= raw red_color %>
+            data: <%= raw @priorities.map{|priority| 
+            	
+            	total = 0
+            	@issues_by_priority.each{|p| 
+								total += Integer(p["total"]) if p["closed"].eql?("f") and priority.id == Integer(p["priority_id"])
+            	}
+
+            	total
+
+            }.to_json %>
+        }
+    ]};
+
+
+    //assignee charts
+    var chart_assignee_data = {
+	    labels: <%= raw @assignees.map{|a| "#{a.name}"}.to_json %>,
+	    datasets: [
+	        {
+	            label: "Open Issues",
+	            <%= raw red_color %>
+	            data: <%= raw @assignees.map{|a|
+	            		total = 0
+		            	@issues_by_assigned_to.each{|i|
+										total += Integer(i["total"]) if i["closed"].eql?("f") and a.id == Integer(i["assigned_to_id"])
+		            	}
+		            	total
+	            	}.to_json %>
+	        },
+	        {
+	            label: "Closed Issues",
+	            <%= raw green_color %>
+	            data: <%= raw @assignees.map{|a|
+	            		total = 0
+		            	@issues_by_assigned_to.each{|i|
+										total += Integer(i["total"]) if i["closed"].eql?("t") and a.id == Integer(i["assigned_to_id"])
+		            	}
+		            	total
+	            	}.to_json %>
+	        }
+	    ]
+	};
+
+	///project chart
+
+<% unless @used_projects.nil? %>
+
+		var chart_project_data = {
+
+	    labels: <%= raw @used_projects.map{|a| a.identifier[0..13] }.to_json %>,
+	    datasets: [
+      {
+        label: "Created Issues",
+        <%= raw red_color %>
+        data: <%= raw @used_projects.map{|a| 
+      	
+        		total = 0
+
+          	@issues_by_project.each{|i| 
+							total += Integer(i["total"]) if i["closed"].eql?("f") and a.id == Integer(i["project_id"])
+          	}
+
+          	total
+
+        	}.to_json %>
+      },
+      {
+        label: "Closed Issues",
+        <%= raw green_color %>
+        data: <%= raw @used_projects.map{|a| 
+      	
+        		total = 0
+
+          	@issues_by_project.each{|i| 
+							total += Integer(i["total"]) if i["closed"].eql?("t")  and a.id == Integer(i["project_id"])
+          	}
+
+          	total
+
+        	}.to_json %>
+      }]
+	};
+
+<% end %>
+
+	//author chart
+	var chart_author_data = {
+
+			<% 
+
+				if @s_project.nil? 
+					data1 = @projects 
+					data2 = "project_id"
+				else 
+					data1 = @authors 
+					data2 = "author_id"
+				end 
+			%>
+
+	    labels: <%= raw @authors.map{|a| a.name }.to_json %>,
+	    datasets: [
+      {
+        label: "Created Issues",
+        <%= raw red_color %>
+        data: <%= raw @authors .map{|a| 
+      	
+        		total = 0
+
+          	@issues_by_project.each{|i|
+          	unless i["author_id"].nil?
+          		if i["closed"].eql?("f")  and a.id == Integer(i["author_id"])
+								total += Integer(i["total"])
+							end
+          	end
+          	}
+						total
+        	}.to_json %>
+      },
+      {
+        label: "Closed Issues",
+        <%= raw green_color %>
+        data: <%= raw @authors .map{|a| 
+      	
+        		total = 0
+
+          	@issues_by_project.each{|i|
+          	unless i["author_id"].nil?
+							if i["closed"].eql?("t") and a.id == Integer(i["author_id"] )
+								total += Integer(i["total"])
+							end
+						end
+          	}
+          	total
+
+        	}.to_json %>
+      }]
+	};
+
+
+	$(document).ready(function(){
+		var ctx = document.getElementById("chart_left").getContext("2d");
+		window.myLine = new Chart(ctx).Line(chart_left_data, {
+			responsive: false
+		});
+
+		var ctx2 = document.getElementById("chart_right").getContext("2d");
+		window.myLine = new Chart(ctx2).Radar(chart_right_data, {
+		    pointDot: false
+		});
+
+		var ctx3 = document.getElementById("chart_assignee").getContext("2d");
+		window.myLine = new Chart(ctx3).Bar(chart_assignee_data, {
+		    barShowStroke: false
+		});
+		<% if @s_project.nil? %>
+			var ctx4 = document.getElementById("chart_author_project").getContext("2d");
+			window.myLine = new Chart(ctx4).Bar(chart_project_data, {
+			    barShowStroke: false
+			});
+		<% else %>
+			var ctx4 = document.getElementById("chart_author_project").getContext("2d");
+			window.myLine = new Chart(ctx4).Bar(chart_author_data, {
+			    barShowStroke: false
+			});
+		<% end %>
+
+
+		var ctx5 = document.getElementById("chart_open").getContext("2d");
+		window.myLine = new Chart(ctx5).Bar(chart_open_issues, {
+			barShowStroke: false
+		});
+
+	});
+
+
+</script>
+<div class="ui-helper-clearfix"> </div>

@@ -1,0 +1,40 @@
+.legend{
+	width:15px;
+	height:15px;
+	border-radius:2px;
+	float:left;
+
+}
+
+.green{
+	background-color:rgba(92,184,92,0.5);
+	border: 1px solid rgba(68,157,68,1);
+
+}
+
+.red{
+	background-color:rgba(197,63,59,0.6);
+	border: 1px solid rgba(201,48,44,1);
+
+}
+
+.label{
+	float:left;
+	padding-left:5px;
+	line-height:17px;
+}
+
+
+.green_label{
+	color:rgba(92,184,92,0.5);
+}
+
+
+.red_label{
+	color:rgba(197,63,59,0.6);
+}
+
+.chart_footer{
+	font-size:8px;
+	color:CCC;
+}

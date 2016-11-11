@@ -1,0 +1,126 @@
+<h3><%= l(:stats_label_filters) %></h3>
+
+<% unless params["active_filter"].nil? or params["active_filter"]=="all"  %>
+<div>
+	<b><%= l(:stats_label_filtering_between) %></b> <br />
+	<b><%= @dates[:begin_date]%></b>
+	<%= l(:stats_label_and) %>
+	<b><%= @dates[:end_date]%></b>
+	<br>
+</div>
+
+<% end %>
+
+<% 
+	labels = [:stats_label_begining_of_time, :stats_label_current_week, :stats_label_last_week,:stats_label_current_month, :stats_label_last_month]
+%>
+
+
+
+<div>
+	<%=link_to_function l(:stats_label_begining_of_time), "redirect(0)",:id =>	"all_link",						:class => ("selected" if params["time_filter"] == "all" || params["time_filter"].nil?) %><br>
+	<%=link_to_function l(:stats_label_current_week), "redirect(1)", 		:id =>	"current_week_link",	:class => ("selected" if params["time_filter"] == "current_week") %><br>
+	<%=link_to_function l(:stats_label_last_week), 		"redirect(2)", 		:id =>	"last_week_link",			:class => ("selected" if params["time_filter"] == "last_week") %><br>
+	<%=link_to_function l(:stats_label_current_month),"redirect(3)", 		:id =>	"current_month_link",	:class => ("selected" if params["time_filter"] == "current_month") %><br>
+	<%=link_to_function l(:stats_label_last_month), 	"redirect(4)", 		:id =>	"last_month_link",		:class => ("selected" if params["time_filter"] == "last_month") %><br>
+	<%=link_to_function l(:stats_label_custom), 			"redirect(5)", 		:id =>  "custom_link", 				:class => ("selected" if params["time_filter"] == "custom") %><br>
+
+
+
+	<div id="custom_interval">
+		<%= form_tag({:controller => "stats", :action => "index", :time_filter => "custom"}, :method => "POST") do %>
+
+			<table class="table" style="border:none;">
+				<tr>
+					<td><%= l(:stats_label_begin) %></td>
+					<td><%= l(:stats_label_end) %></td>
+					<td></td>
+				</tr>
+				
+				<tr>
+					<td>
+						<%= text_field_tag(l(:stats_label_begin), @dates[:begin_date], :size => 10, :id => "sdate", :name => "sdate") %>
+		  			<%= calendar_for("sdate") %>
+					</td>
+					<td>
+						<%= text_field_tag(l(:stats_label_end), @dates[:end_date], :size => 10, :id => "edate", :name => "edate") %>
+		  			<%= calendar_for("edate") %>
+					</td>
+					<td><%= button_tag l(:stats_label_change) %></td>
+				</tr>
+			</table>
+		<% end %>
+	</div>
+	
+</div>
+
+
+
+
+<div>
+	<h3><%= l(:label_project) %>:</h3>
+	<% 	projects_tmp = []
+			projects_tmp << Project.new(:identifier => "all_projects", :name => l(:stats_all_projects))
+			@projects.each do |p| projects_tmp << p end 
+	%>
+	<%= select_tag "cb_projects", options_from_collection_for_select(projects_tmp, 'identifier', 'name', :selected => params["project"])  %>
+</div>
+
+<br>
+<hr />
+
+<div>
+	<h3><%= l(:stats_label_legend) %>:</h3>
+	<div class="legend red"></div><div class="label red_label"><%= l(:stats_label_open_issues)%></div>
+	<br><br>
+	<div class="legend green"></div><div class="label green_label"><%= l(:stats_label_closed_issues)%></div>
+</div>
+<br><br>
+
+<% count=0; @open_issues.each{|issue| count+=Integer(issue["total"]) if issue["closed"].eql?("f")}%>
+
+<div>
+	<h3><%= l(:stats_label_open_issues) %> (<%= count %>):</h3>
+	<canvas  id="chart_open" style="display: block; margin: -5 auto;" height="150" width="200"></canvas>
+	<span class="chart_footer"><%= l(:stats_open_issues_chart_info) %></span>
+</div>
+
+
+
+<script>
+
+
+	$(document).on('ready page:load', function () {
+		if ("<%= params["time_filter"] %>" != "custom")
+		 $("#custom_interval").hide();
+	});
+
+	$(function(){
+		$( "#cb_projects" ).on( "change", function() {
+		  window.location = "?project=" + $('#cb_projects option:selected').val() 
+		});
+	});
+
+	function redirect(n)
+	{
+		var url;
+
+		switch (n)
+		{
+			case 0: url = "<%= url_for :controller => 'stats', :action => 'index', :time_filter => 'all' %>"; break;
+			case 1: url = "<%= url_for :controller => 'stats', :action => 'index', :time_filter => 'current_week' %>"; break;
+			case 2: url = "<%= url_for :controller => 'stats', :action => 'index', :time_filter => 'last_week' %>"; break;
+			case 3: url = "<%= url_for :controller => 'stats', :action => 'index', :time_filter => 'current_month' %>"; break;
+			case 4: url = "<%= url_for :controller => 'stats', :action => 'index', :time_filter => 'last_month' %>"; break;
+			case 5: 
+				$("#custom_interval").show(500); 
+				$("#custom_link").addClass('selected'); 
+				$("#<%= params["time_filter"] %>_link").removeClass('selected')
+				return;
+		}
+
+		url += "?project=" + $('#cb_projects option:selected').val();
+		window.location = url;
+	}
+
+</script>

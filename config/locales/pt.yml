@@ -1,0 +1,27 @@
+# English strings go here for Rails i18n
+pt:
+  stats_label_stats:                                Estatisticas
+  stats_label_issue_activity:                       Atividade das Tarefas
+  stats_label_new_issues_priorities:                Prioridades das Novas Tarefas
+  stats_label_more_active_issues:                   Tarefas mais ativas
+  stats_label_filters:                              Filtros
+
+  stats_label_current_week:                         Semana Atual
+  stats_label_current_month:                        Mês Atual
+  stats_label_last_week:                            Ultima semana
+  stats_label_last_month:                           Ultimo mês
+  stats_label_begining_of_time:                     Desde sempre
+  stats_label_filtering_between:                    "Filtrar entre: "
+  stats_label_and:                                  e
+  stats_label_open_issues_count:                    "Tarefas atualmente abertas: "
+  stats_all_projects:                               "Todos os Projetos"
+  stats_label_custom:                               "Personalizado"
+  stats_label_change:                               "Alterar"
+  stats_label_begin:                                "Inicio"
+  stats_label_end:                                  "Fim"
+
+
+  stats_label_open_issues:                          "Tarefas Abertas"
+  stats_label_closed_issues:                        "Tarefas Fechadas"
+  stats_label_legend:                               "Legenda"
+  stats_open_issues_chart_info:                     "Total de tarefas abertas desde sempre, nenhum filtro aplicado"

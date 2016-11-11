@@ -1,0 +1,26 @@
+# French strings go here for Rails i18n
+fr:
+  stats_label_stats:                                Statistiques
+  stats_label_issue_activity:                       Activité des demandes
+  stats_label_new_issues_priorities:                Priorité des nouvelles demandes
+  stats_label_more_active_issues:                   Demandes les plus actives
+  stats_label_filters:                              Filtres
+
+  stats_label_current_week:                         Semaine courante
+  stats_label_current_month:                        Mois courant
+  stats_label_last_week:                            Semaine dernière
+  stats_label_last_month:                           Mois dernier
+  stats_label_begining_of_time:                     Depuis le début
+  stats_label_filtering_between:                    "Filtrage entre: "
+  stats_label_and:                                  et
+  stats_label_open_issues_count:                    "Demandes ouvertes actuellement: "
+  stats_all_projects:                               "Tous les projets" 
+  stats_label_custom:                               "Personnalisé"
+  stats_label_change:                               "Changer"
+  stats_label_begin:                                "Début"
+  stats_label_end:                                  "Fin"
+
+  stats_label_open_issues:                          "Demandes ouvertes"
+  stats_label_closed_issues:                        "Demandes fermées"
+  stats_label_legend:                               "Légende"
+  stats_open_issues_chart_info:                     "Totalité des demandes ouvertes depuis le début, sans filtre"

@@ -1,0 +1,26 @@
+# English strings go here for Rails i18n
+en:
+  stats_label_stats:       													Statistics
+  stats_label_issue_activity: 											Issue Activity
+  stats_label_new_issues_priorities:							  New Issue Priorities
+  stats_label_more_active_issues: 									More active issues
+  stats_label_filters: 													    Filters
+
+  stats_label_current_week: 											  Current Week
+  stats_label_current_month: 											  Current Month
+  stats_label_last_week: 												    Last Week
+  stats_label_last_month: 												  Last Month
+  stats_label_begining_of_time: 										Since Beginning of Time
+  stats_label_filtering_between:										"Filtering betwween: "
+  stats_label_and:														      and
+  stats_label_open_issues_count:										"Currently Opened Issues: "
+  stats_all_projects:													      "All Projects" 
+  stats_label_custom:                               "Custom"
+  stats_label_change:                               "Change"
+  stats_label_begin:                                "Begin"
+  stats_label_end:                                  "End"
+
+  stats_label_open_issues:                          "Open Issues"
+  stats_label_closed_issues:                        "Closed Issues"
+  stats_label_legend:                               "Legend"
+  stats_open_issues_chart_info:                     "Total opened issues since beginning of time, no filters"
