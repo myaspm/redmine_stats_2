@@ -1,3 +1,5 @@
+* ALL CREDIT IS DUE TO LUIS FONTES. He is the original creator of the plugin, i just fixed it so that it works with postgreSQL. Check him out at https://github.com/luisfontes19/ *
+
 Updated version of the redmine_stats plugin.
 
 Changelog from original version : 
