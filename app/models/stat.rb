@@ -57,20 +57,25 @@ class Stat < ActiveRecord::Base
   #get all authors of issues
   def self.authors(project)
   	
-  	data = []
+  	  	if project.nil?
 
-  	if project.nil?
   		ActiveRecord::Base.connection.execute("SELECT count(project_id), project_id from issues group by project_id  order by count(project_id) DESC LIMIT 5").each do |row|
-					data << Project.find(row["project_id"])
-			end
+      if ActiveRecord::Base.connection.instance_values["config"][:adapter].eql?("mysql2")
+					data << Project.find(row[1])
+      else
+          data << Project.find(row["project_id"])
+      end
+      end
   	else
 
 			ActiveRecord::Base.connection.execute("SELECT count(author_id), author_id from issues where project_id = '#{project.id}' group by author_id  order by count(author_id) DESC LIMIT 5").each do |row|
-					data << User.find(row["author_id"])
-			end
-		end
-
-		data
+        if ActiveRecord::Base.connection.instance_values["config"][:adapter].eql?("mysql2")
+          data << User.find(row[1])
+        else
+          data << User.find(row["author_id"])
+        end
+      end
+    end
 		
   end
 
