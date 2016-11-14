@@ -17,3 +17,7 @@ A :
 Q : Do i need to migrate database or install a gem?
 
 A : No, all you need to do is restarting redmine instance.
+
+Q : What's to come?
+
+A : Issue stats involving child and parent projects will be improved. Project name's will be updated to include parent project's name.
