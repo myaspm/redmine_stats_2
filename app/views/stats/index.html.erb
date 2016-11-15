@@ -76,7 +76,7 @@ green_color = 	'fillColor : "rgba(92,184,92,0.5)",
 <% end %>
 
 <script>
-
+	<% %>
 	//open issues chart
 	var labels = <%= raw @priorities.map{|p| p.name}.to_json %>;
 	var chart_open_issues = {
@@ -88,10 +88,14 @@ green_color = 	'fillColor : "rgba(92,184,92,0.5)",
         data: <%= raw @priorities.map{|priority| 
         	
         	count = 0
-        	@open_issues.each{|p| 
+        	@open_issues.each{|p|
+					if @flag == 0
+						count += p["total"] if (p["closed"] == "f" or p["closed"] ==0 )and priority.id == p["priority_id"]
+					else
 						count += Integer(p["total"]) if p["closed"].eql?("f") and priority.id == Integer(p["priority_id"])
+					end
         	}
-
+					#print count
         	count
 
         }.to_json %>
@@ -124,8 +128,12 @@ green_color = 	'fillColor : "rgba(92,184,92,0.5)",
 						<%= raw green_color %>
             data: <%= raw @priorities.map{|priority|
             	total = 0
-            	@issues_by_priority.each{|p| 
+            	@issues_by_priority.each{|p|
+            	if @flag == 0
+            		total += p["total"] if (p["closed"] == "t" or p["closed"] == 1) and priority.id == p["priority_id"]
+            	else
 								total += Integer(p["total"]) if p["closed"].eql?("t") and priority.id == Integer(p["priority_id"])
+            	end
             	}
             	total
             }.to_json %>
@@ -137,7 +145,11 @@ green_color = 	'fillColor : "rgba(92,184,92,0.5)",
             	
             	total = 0
             	@issues_by_priority.each{|p| 
+							if @flag == 0
+            		total += p["total"] if (p["closed"] == "f" or p["closed"] == 0) and priority.id == p["priority_id"]
+            	else
 								total += Integer(p["total"]) if p["closed"].eql?("f") and priority.id == Integer(p["priority_id"])
+							end
             	}
 
             	total
@@ -157,7 +169,11 @@ green_color = 	'fillColor : "rgba(92,184,92,0.5)",
 	            data: <%= raw @assignees.map{|a|
 	            		total = 0
 		            	@issues_by_assigned_to.each{|i|
+		            	if @flag == 0
+		            		total += i["total"] if (i["closed"] == "f" or i["closed"] ==0) and a.id == i["assigned_to_id"]
+		            	else
 										total += Integer(i["total"]) if i["closed"].eql?("f") and a.id == Integer(i["assigned_to_id"])
+		            	end
 		            	}
 		            	total
 	            	}.to_json %>
@@ -168,7 +184,11 @@ green_color = 	'fillColor : "rgba(92,184,92,0.5)",
 	            data: <%= raw @assignees.map{|a|
 	            		total = 0
 		            	@issues_by_assigned_to.each{|i|
+		            	if @flag == 0
+		            	total += i["total"] if (i["closed"] == "t" or i["closed"] ==1) and a.id == i["assigned_to_id"]
+		            	else
 										total += Integer(i["total"]) if i["closed"].eql?("t") and a.id == Integer(i["assigned_to_id"])
+		            	end
 		            	}
 		            	total
 	            	}.to_json %>
@@ -187,16 +207,16 @@ green_color = 	'fillColor : "rgba(92,184,92,0.5)",
       {
         label: "Created Issues",
         <%= raw red_color %>
-        data: <%= raw @used_projects.map{|a| 
-      	
+        data: <%= raw @used_projects.map{|a|
         		total = 0
-
-          	@issues_by_project.each{|i| 
+          	@issues_by_project.each{|i|
+          	if @flag == 0
+          	  total += i["total"] if (i["closed"] == "f" or i["closed"] == 0) and a.id == i["project_id"]
+          	else
 							total += Integer(i["total"]) if i["closed"].eql?("f") and a.id == Integer(i["project_id"])
+          	end
           	}
-
           	total
-
         	}.to_json %>
       },
       {
@@ -206,9 +226,13 @@ green_color = 	'fillColor : "rgba(92,184,92,0.5)",
       	
         		total = 0
 
-          	@issues_by_project.each{|i| 
+          	@issues_by_project.each{|i|
+          	 if @flag == 0
+          	 total += i["total"] if (i["closed"] == "t" or i["closed"] == 1) and a.id == i["project_id"]
+          	 else
 							total += Integer(i["total"]) if i["closed"].eql?("t")  and a.id == Integer(i["project_id"])
-          	}
+          	 end
+          	 }
 
           	total
 
@@ -242,10 +266,14 @@ green_color = 	'fillColor : "rgba(92,184,92,0.5)",
         		total = 0
 
           	@issues_by_project.each{|i|
-          	unless i["author_id"].nil?
-          		if i["closed"].eql?("f")  and a.id == Integer(i["author_id"])
-								total += Integer(i["total"])
-							end
+          	if @flag == 0
+          	  total += i["total"] if (i["closed"] == "f" or  i["closed"] == 0) and a.id == i["author_id"]
+          	else
+          	  unless i["author_id"].nil?
+          		  if i["closed"].eql?("f")  and a.id == Integer(i["author_id"])
+								  total += Integer(i["total"])
+							  end
+          	  end
           	end
           	}
 						total
@@ -259,11 +287,15 @@ green_color = 	'fillColor : "rgba(92,184,92,0.5)",
         		total = 0
 
           	@issues_by_project.each{|i|
-          	unless i["author_id"].nil?
-							if i["closed"].eql?("t") and a.id == Integer(i["author_id"] )
-								total += Integer(i["total"])
-							end
-						end
+          	if @flag == 0
+          	  total += i["total"] if (i["closed"] == "t" or  i["closed"] == 1) and a.id == i["author_id"]
+          	else
+          	  unless i["author_id"].nil?
+          		  if i["closed"].eql?("t")  and a.id == Integer(i["author_id"])
+								  total += Integer(i["total"])
+							  end
+          	  end
+          	end
           	}
           	total
 
