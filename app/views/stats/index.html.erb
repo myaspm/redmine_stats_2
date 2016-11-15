@@ -202,7 +202,7 @@ green_color = 	'fillColor : "rgba(92,184,92,0.5)",
 
 		var chart_project_data = {
 
-	    labels: <%= raw @used_projects.map{|a| a.name[0..10].gsub(/\s\w+$/,'...') }.to_json %>,
+	    labels: <%= raw @used_projects.map{|a| a.name[0..15].gsub(/\s\w+$/,'...') }.to_json %>,
 	    datasets: [
       {
         label: "Created Issues",
