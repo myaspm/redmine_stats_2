@@ -14,7 +14,7 @@ class StatsController < ApplicationController
     @s_project = get_project          #project to filter by
     parameters[:project] = @s_project
     
-  
+    @flag = 0 if ActiveRecord::Base.connection.instance_values["config"][:adapter].eql?("mysql2")
   	@statuses = IssueStatus.all
   	@trackers = Tracker.all
   	@priorities = IssuePriority.all.reverse
