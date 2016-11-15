@@ -77,7 +77,14 @@
 </div>
 <br><br>
 
-<% count=0; @open_issues.each{|issue| count+=Integer(issue["total"]) if issue["closed"].eql?("f")}%>
+<% count=0; @open_issues.each{|issue|
+	if @flag == 0
+		count+=issue["total"] if issue["closed"]=="f" or issue["closed"]== 0
+	else
+	  count+=Integer(issue["total"]) if issue["closed"].eql?("f")
+  end
+}
+%>
 
 <div>
 	<h3><%= l(:stats_label_open_issues) %> (<%= count %>):</h3>
