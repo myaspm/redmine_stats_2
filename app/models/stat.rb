@@ -56,7 +56,7 @@ class Stat < ActiveRecord::Base
 
   #get all authors of issues
   def self.authors(project)
-  	
+  	data = []
   	  	if project.nil?
 
   		ActiveRecord::Base.connection.execute("SELECT count(project_id), project_id from issues group by project_id  order by count(project_id) DESC LIMIT 5").each do |row|
