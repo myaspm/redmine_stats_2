@@ -58,7 +58,7 @@ green_color = 	'fillColor : "rgba(92,184,92,0.5)",
 	
 	<h3><%= @s_project.nil?  ? l(:field_project) : l(:field_author) %></h3><br>
 	
-	<canvas style="display: block; margin: 0 auto;" id="chart_author_project"  width="400" height="250"></canvas><br>
+	<canvas style="display: block; margin: 0 auto;" id="chart_author_project"  width="400" height="400"></canvas><br>
 	<%= 
 		if @s_project.nil? 
 			render :partial => 'simple', 
@@ -202,7 +202,7 @@ green_color = 	'fillColor : "rgba(92,184,92,0.5)",
 
 		var chart_project_data = {
 
-	    labels: <%= raw @used_projects.map{|a| a.name[0..15].gsub(/\s\w+$/,'...') }.to_json %>,
+	    labels: <%= raw @used_projects.map{|a| a.name[0..30].gsub(/\s\w+$/,'...') }.to_json %>,
 	    datasets: [
       {
         label: "Created Issues",
