@@ -3,10 +3,10 @@ require 'redmine_stats/redmine_stats'
 
 
 Redmine::Plugin.register :redmine_stats do
-  name 'Redmine Stats plugin'
-  author 'Luis Fontes <mail.fontes@gmail.com>'
+  name 'Redmine Stats Plugin Version 2'
+  author 'Mustafa Yılmaz <myaspm@gmail.com>'
   description 'Plugin to display global statistics of projects'
-  version '0.0.3'
+  version '0.0.1'
   #url 'http://example.com/path/to/plugin'
   #author_url 'http://example.com/about'
 
