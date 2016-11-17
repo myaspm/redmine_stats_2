@@ -124,7 +124,7 @@ class Stat < ActiveRecord::Base
     #no date filters
     if(begin_date.nil? and end_date.nil?)
 
-    	7.times do |days_before|
+    	30.times do |days_before|
 
         if(project.nil?)
 
