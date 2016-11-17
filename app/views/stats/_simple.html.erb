@@ -13,11 +13,14 @@
 <tr class="<%= cycle("odd", "even") %>">
   <td class="name"><%= link_to h(row.name), aggregate_path(@project, field_name, row) %></td>
   <td>
-		<%= aggregate_link data, { field_name => row.id, "closed" => 0 }, 
+		<%= if @dates[:begin_date].nil? and @dates[:end_date].nil?
+					@dates[:begin_date] = Date.new(2014,01,01)
+					end
+				aggregate_link data, { field_name => row.id, "closed" => 0 },
 				aggregate_path(@project, field_name, row,
 						:op => {"status_id"=>"o", "#{filter_by}"=>"><"}, 
 						"v[#{filter_by}]" => formated_dates(@dates), 
-						"f" => ["status_id", "#{filter_by}", ""]) 
+						"f" => ["status_id", "#{filter_by}", ""])
 		%>
   </td>
   <td>
