@@ -1,0 +1,26 @@
+# Turkish strings go here for Rails i18n
+tr:
+  stats_label_stats:       													İstatistikler
+  stats_label_issue_activity: 											İş Etkinliği
+  stats_label_new_issues_priorities:							  Yeni İş Öncelikleri
+  stats_label_more_active_issues: 									Etkin İşler
+  stats_label_filters: 													    Filtreler
+
+  stats_label_current_week: 											  Bu Hafta
+  stats_label_current_month: 											  Bu Ay
+  stats_label_last_week: 												    Geçen Hafta
+  stats_label_last_month: 												  Geçen Ay
+  stats_label_begining_of_time: 										En Baştan
+  stats_label_filtering_between:										"Filtre : "
+  stats_label_and:														      ve
+  stats_label_open_issues_count:										"Şu an açık olan işler: "
+  stats_all_projects:													      "Tüm Projeler" 
+  stats_label_custom:                               "Özel"
+  stats_label_change:                               "Değiştir"
+  stats_label_begin:                                "Başlangıç"
+  stats_label_end:                                  "Son"
+
+  stats_label_open_issues:                          "Açık İşler"
+  stats_label_closed_issues:                        "Kapalı İşler"
+  stats_label_legend:                               "Grafik Tanımı"
+  stats_open_issues_chart_info:                     "Filtresiz bir şekilde en baştan beri açık olan tüm işler"
