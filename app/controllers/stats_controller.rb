@@ -22,8 +22,6 @@ class StatsController < ApplicationController
   	@authors = Stat.authors(@s_project)
 
     @projects = Project.active           #List os projects that can be used as a filter
-    
-
 
     @open_issues = Stat.issues_by_priority()
     @issues_by_tracker = Stat.issues_by_tracker(parameters)
@@ -58,10 +56,12 @@ class StatsController < ApplicationController
 
   def date_interval
 
+
+    date = Date.today
     begin_date = nil
     end_date = nil
 
-    date = Date.today
+
 
     unless params[:time_filter].nil?
       case params[:time_filter]
@@ -86,7 +86,6 @@ class StatsController < ApplicationController
           end_date    =  e
       end
     end
-
     {:begin_date => begin_date, :end_date => end_date}
 
   end
