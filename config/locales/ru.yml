@@ -1,0 +1,26 @@
+# English strings go here for Rails i18n
+en:
+  stats_label_stats:       													Статистика
+  stats_label_issue_activity: 											Активность задач
+  stats_label_new_issues_priorities:							  Приоритет задач
+  stats_label_more_active_issues: 									Задачи с наибольшей активностью
+  stats_label_filters: 													    Фильтры
+
+  stats_label_current_week: 											  Текущая неделя
+  stats_label_current_month: 											  Текущий месяц
+  stats_label_last_week: 												    Прошедшая неделя
+  stats_label_last_month: 												  Прошедший месяц
+  stats_label_begining_of_time: 										За весь период
+  stats_label_filtering_between:										"Фильтровать между: "
+  stats_label_and:														      и
+  stats_label_open_issues_count:										"Открытые задачи: "
+  stats_all_projects:													      "Все проекты"
+  stats_label_custom:                               "За период (выбрать)"
+  stats_label_change:                               "Обновить"
+  stats_label_begin:                                "с"
+  stats_label_end:                                  "по"
+
+  stats_label_open_issues:                          "Открытые задачи"
+  stats_label_closed_issues:                        "Закрытые задачи"
+  stats_label_legend:                               "Описание"
+  stats_open_issues_chart_info:                     "Всего открытых задач за все время, без фильтров"
